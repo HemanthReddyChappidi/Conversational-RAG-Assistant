@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import StreamingResponse
 import shutil
 import os
 from app.rag_pipeline import build_rag_chain
@@ -34,8 +35,15 @@ def upload_file(file: UploadFile = File(...)):
     return {"message": "File uploaded and indexed"}
 
 @app.post("/ask")
-def ask_question(question: str):
-    result = qa_chain.invoke({"input": question})
+def ask_question(question: str, session_id: str = "default"):
+
+    if qa_chain is None:
+        return {"error": "Please upload a document first."}
+
+    result = qa_chain.invoke(
+        {"input": question},
+        config={"configurable": {"session_id": session_id}}
+    )
 
     sources = []
     for doc in result["context"]:
@@ -45,3 +53,23 @@ def ask_question(question: str):
         "answer": result["answer"],
         "sources": list(set(sources))
     }
+
+
+@app.post("/ask_stream")
+def ask_question_stream(question: str, session_id: str = "streamlit_user"):
+
+    if qa_chain is None:
+        return StreamingResponse(
+            iter(["Please upload a document first."]),
+            media_type="text/plain"
+        )
+
+    def generate():
+        for chunk in qa_chain.stream(
+            {"input": question},
+            config={"configurable": {"session_id": session_id}}
+        ):
+            if "answer" in chunk:
+                yield chunk["answer"]
+
+    return StreamingResponse(generate(), media_type="text/plain")

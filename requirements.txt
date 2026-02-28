@@ -9,3 +9,8 @@ python-multipart
 tiktoken
 langchain-text-splitters
 openai
+langchain-core==0.2.36
+sentence-transformers
+streamlit
+requests
+python-dotenv

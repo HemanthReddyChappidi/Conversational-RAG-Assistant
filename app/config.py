@@ -8,5 +8,6 @@ DATA_PATH = "data"
 VECTOR_DB_PATH = "vector_db/faiss_index"
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 150
-EMBEDDING_MODEL = "text-embedding-3-small"
+#EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_BACKEND = os.getenv("EMBEDDING_BACKEND", "openai")
 LLM_MODEL = "gpt-4o-mini"

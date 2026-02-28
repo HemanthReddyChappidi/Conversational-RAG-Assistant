@@ -9,7 +9,7 @@ python-multipart
 tiktoken
 langchain-text-splitters
 openai
-langchain-core==0.2.36
+langchain-core
 sentence-transformers
 streamlit
 requests

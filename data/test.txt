@@ -1,0 +1,61 @@
+Once the parameters have been estimated, the posterior probability can be obtained
+just by multiplying the prior by the likelihood for each attribute. Thus, given the values
+for m attributes, a1,... am , for each class ci , the posterior is proportional to:
+P(ci | a1,... am )∼ P(ci )P(a1 | ci )··· P(am | ci ) (4.11)
+The class ck that maximizes the previous equation will be selected.4
+Returning to the golf example, Table 4.2 depicts 14 records with 5 variables: four
+attributes (Outlook, Temperature, Humidity, Windy) and one class (Play). A NBC for
+the golf example is depicted in Fig. 4.2, including some of the required probability
+tables.
+In summary, the main advantages of the naive Bayesian classifier are:
+• The low number of required parameters, which reduces the memory requirements
+and facilitates learning them from data.
+• The low computational cost for inference (estimating the posteriors) and learning.
+• The relatively good performance (classification precision) in many domains.
+• A simple and intuitive model.
+While its main limitations are the following:
+• In some domains, the performance is reduced given that the conditional indepen-
+dence assumption is not valid.
+4This assumes that the misclassification cost is the same for all classes; if these costs are not the
+same, the class that minimizes the misclassification cost should be selected.
+4.2 Bayesian Classifier 49
+Fig. 4.2 A naive Bayesian classifier for the golf example. Two of the required probability tables are
+shown: P(play) and P(wi nd y | play). The conditional probabilities of the other three attributes
+given the class will also be required to complete the parameters of this classifier
+• If there are continuous attributes, these need to be discretized (or consider alter-
+native models such as the Gaussian naive Bayes).
+In the next section we introduce the Gaussian naive Bayesian classifier. Then we
+will cover other models that consider certain dependencies between attributes. Later
+we will describe techniques that can eliminate or join attributes, as another way to
+overcome the conditional independence assumption.
+4.3 Gaussian Naive Bayes
+(ai−μ)2
+In this case, the attributes are continuous random variables, and the class is discrete.
+Thus, each attribute is modeled by some continuous probability distribution over the
+range of its values. A common assumption is that within each class, the values of
+numeric attributes are normally distributed. That is:
+P(Ai | C= c j )= (1/√2πσ)e−
+2σ2 (4.12)
+Where μ and σ are the mean and standard deviation, respectively, of the distribution
+of attribute Ai given class c j . So for each attribute given each class value, the Gaussian
+naive Bayes (GNB) requires to represent such a distribution in terms of its mean and
+standard deviation. Additionally, as in the naive Bayes, the prior probability of each
+class is required.
+Learning a GNB consists in estimating the prior probabilities of the classes, and
+the mean and standard deviation of each attribute given the class. The prior of the
+class is obtained as for the naive Bayes via maximum likelihood estimation. The
+maximum likelihood estimates of the mean and standard deviation of each attribute
+50 4 Bayesian Classifiers
+given the class; that is of a normal distribution, are the sample average and the sample
+standard deviation. These can be easily obtained from data.
+Sample average:
+μX ∼ X= (1/N )
+N
+i=1
+xi (4.13)
+Sample standard deviation:
+σX ∼ SX =
+N
+(xi− X )/(N− 1) (4.14)
+i=1
+In the inference stage, for estimating the posterior

@@ -27,3 +27,20 @@ uvicorn app.main:app --reload
 
 ### 4. Start UI
 streamlit run streamlit_app.py
+
+
+### 5.Test Docker locally
+
+Build image:
+
+docker build -t rag-backend .
+
+Run container:
+
+docker run -p 8000:8000 --env-file .env rag-backend
+
+Open browser:
+
+http://localhost:8000/docs
+
+If this works → you are cloud-ready.
